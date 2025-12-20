@@ -34,3 +34,18 @@ teacher(app);
 
 var auth = require('./app/route/authRoute');
 auth(app);
+
+var session = require('./app/route/session');
+session(app);
+
+var mark = require('./app/route/mark');
+mark(app);
+
+var reportType = require('./app/route/reportType');
+reportType(app);
+
+var studentGroupSession = require('./app/route/studentGroupSession');
+studentGroupSession(app);
+
+var attestationBook = require('./app/route/attestationBook');
+attestationBook(app);
