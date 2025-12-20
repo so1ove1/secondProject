@@ -1,10 +1,11 @@
-import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
-import { db } from './db.config.js';
+const JwtStrategy = require('passport-jwt').Strategy;
+const ExtractJwt = require('passport-jwt').ExtractJwt;
+const db = require('./db.config.js');
 
-export default function (passport) {
+module.exports = function (passport) {
     const opts = {
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-        secretOrKey: process.env.JWT_SECRET
+        secretOrKey: process.env.JWT_SECRET || "secret_key"
     };
 
     passport.use(
@@ -18,4 +19,4 @@ export default function (passport) {
             }
         })
     );
-}
+};

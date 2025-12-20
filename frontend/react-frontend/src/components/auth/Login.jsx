@@ -10,7 +10,8 @@ const Login = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post("/login", {username, password});
+            const res = await axios.post("/auth/login", {username, password});
+            localStorage.setItem("token", res.data.token);
             navigate("/listDisciplines");
         }
         catch (err) {

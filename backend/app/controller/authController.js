@@ -1,16 +1,17 @@
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import { db } from './db.config.js';
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const db = require('../config/db.config.js');
 
-export async function register(req, res) {
-    const {password, username} = req.body;
+exports.register = async (req, res) => {
+    const { password, username } = req.body;
 
     try {
         const existing = await db.user.findOne({
-            where: {username: username}
+            where: { username: username }
         });
+
         if (existing) {
-            return res.status(400).json({message: "Пользователь уже существует"});
+            return res.status(400).json({ message: "Пользователь уже существует" });
         }
 
         const hash = await bcrypt.hash(password, 10);
@@ -21,43 +22,47 @@ export async function register(req, res) {
         });
 
         const token = jwt.sign(
-            {id: user.id},
-            process.env.JWT_SECRET,
-            {expiresIn: "1d"}
+            { id: user.id },
+            process.env.JWT_SECRET || "secret_key",
+            { expiresIn: "1d" }
         );
 
-        res.json({token});
+        res.json({ token });
 
     } catch (e) {
-        console.log(e);
-        res.status(500).json({message: "Ошибка регистрации"});
+        console.error(e);
+        res.status(500).json({ message: "Ошибка регистрации" });
     }
-}
+};
 
-export const login = async (req, res) => {
-    const {username, password} = req.body;
+exports.login = async (req, res) => {
+    const { username, password } = req.body;
 
     try {
         const user = await db.user.findOne({
-            where: {username: username}
+            where: { username: username }
         });
+
         if (!user) {
-            return res.status(400).json({message: "Неверный логин/пароль"});
+            return res.status(400).json({ message: "Неверный логин/пароль" });
         }
 
         const ok = await bcrypt.compare(password, user.password);
-        if (!ok) return res.status(400).json({message: "Неверный логин/пароль"});
+
+        if (!ok) {
+            return res.status(400).json({ message: "Неверный логин/пароль" });
+        }
 
         const token = jwt.sign(
-            {id: user.id},
-            process.env.JWT_SECRET,
-            {expiresIn: "1d"}
+            { id: user.id },
+            process.env.JWT_SECRET || "secret_key",
+            { expiresIn: "1d" }
         );
 
-        res.json({token});
+        res.json({ token });
 
     } catch (e) {
-        console.log(e);
-        res.status(500).json({message: "Ошибка входа"});
+        console.error(e);
+        res.status(500).json({ message: "Ошибка входа" });
     }
-}
+};
