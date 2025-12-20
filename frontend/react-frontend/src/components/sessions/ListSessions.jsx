@@ -6,13 +6,15 @@ function ListSessions() {
     const [sessions, setSessions] = useState([]);
 
     useEffect(() => {
-        http.get("/sessions").then(res => setSessions(res.data));
+        http.get("/sessions")
+            .then(res => setSessions(res.data))
+            .catch(err => console.log(err));
     }, []);
 
     return (
-        <div>
-            <h2>Учебные сессии</h2>
-            <Link to="/addSession">Создать сессию</Link>
+        <div className="container">
+            <h1>Учебные сессии</h1>
+            <Link to="/addSession" className="btn">Создать сессию</Link>
             <table>
                 <thead>
                     <tr>
@@ -21,6 +23,7 @@ function ListSessions() {
                         <th>Преподаватель</th>
                         <th>Тип</th>
                         <th>Дата</th>
+                        <th>Действие</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -31,6 +34,9 @@ function ListSessions() {
                             <td>{s.teacher_discipline?.teacher?.name}</td>
                             <td>{s.report_type?.name}</td>
                             <td>{s.mark_date}</td>
+                            <td>
+                                <Link to={`/session/${s.id}`}>Редактировать</Link>
+                            </td>
                         </tr>
                     ))}
                 </tbody>

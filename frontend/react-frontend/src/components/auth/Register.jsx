@@ -16,7 +16,7 @@ const Register = () => {
             });
 
             localStorage.setItem("token", res.data.token);
-            navigate("/listDisciplines");
+            navigate("/attestations");
 
         } catch (err) {
             console.log(err);
@@ -25,25 +25,34 @@ const Register = () => {
     };
 
     return (
-        <form onSubmit={handleRegister} style={{ maxWidth: 300 }}>
-            <h2>Регистрация</h2>
+        <div className="auth-container">
+            <form onSubmit={handleRegister} className="auth-form">
+                <h2>Регистрация</h2>
 
-            <input
-                placeholder="Имя пользователя"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-            />
+                <label>Имя пользователя:</label>
+                <input
+                    placeholder="Придумайте логин"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                />
 
-            <input
-                type="password"
-                placeholder="Пароль"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            />
+                <label>Пароль:</label>
+                <input
+                    type="password"
+                    placeholder="Придумайте пароль"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
 
-            <button type="submit">Создать аккаунт</button>
-            <Link to={'/login'}><button>Логин</button></Link>
-        </form>
+                <button type="submit">Создать аккаунт</button>
+                
+                <div className="auth-footer">
+                    Уже есть аккаунт? <Link to="/login">Войти</Link>
+                </div>
+            </form>
+        </div>
     );
 }
 

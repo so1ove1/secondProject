@@ -4,7 +4,21 @@ var globalFunctions = require('../config/global.functions.js');
 
 exports.findAll = (req, res) => {
     Attestation.findAll({
-        include: [db.student, db.student_group_session]
+        include: [
+            {
+                model: db.student,
+                include: [db.student_group] // Вкладываем группу в студента
+            },
+            {
+                model: db.student_group_session,
+                include: [
+                    {
+                        model: db.teacher_discipline,
+                        include: [db.discipline] // Вкладываем дисциплину в связку
+                    }
+                ]
+            }
+        ]
     })
     .then(objects => { globalFunctions.sendResult(res, objects); })
     .catch(err => { globalFunctions.sendError(res, err); });
@@ -34,7 +48,15 @@ exports.delete = (req, res) => {
 };
 
 exports.findById = (req, res) => {
-    Attestation.findByPk(req.params.id)
-        .then(object => { globalFunctions.sendResult(res, object); })
-        .catch(err => { globalFunctions.sendError(res, err); });
+    Attestation.findByPk(req.params.id, {
+        include: [
+            { model: db.student, include: [db.student_group] },
+            { 
+                model: db.student_group_session, 
+                include: [{ model: db.teacher_discipline, include: [db.discipline] }] 
+            }
+        ]
+    })
+    .then(object => { globalFunctions.sendResult(res, object); })
+    .catch(err => { globalFunctions.sendError(res, err); });
 };

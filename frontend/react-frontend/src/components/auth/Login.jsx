@@ -1,5 +1,5 @@
-import { useState } from "react"
-import {Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "../../../config/axios";
 
 const Login = () => {
@@ -10,24 +10,45 @@ const Login = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post("/auth/login", {username, password});
+            const res = await axios.post("/auth/login", { username, password });
             localStorage.setItem("token", res.data.token);
-            navigate("/listDisciplines");
-        }
-        catch (err) {
-            alert("Неверный логин или пароль")
+            navigate("/attestations");
+        } catch (err) {
+            alert("Неверный логин или пароль");
         }
     };
 
     return (
-        <form onSubmit={handleLogin}>
-            <h2>Логин</h2>
-            <input value={username} onChange={e => setUsername(e.target.value)}></input>
-            <input type="password" value={password} onChange={e => setPassword(e.target.value)}></input>
-            <button type="submit">Войти</button>
-            <Link to={'/register'}><button>Регистрация</button></Link>
-        </form>
+        <div className="auth-container">
+            <form onSubmit={handleLogin} className="auth-form">
+                <h2>Вход в систему</h2>
+                
+                <label>Логин:</label>
+                <input 
+                    type="text"
+                    value={username} 
+                    onChange={e => setUsername(e.target.value)} 
+                    placeholder="Введите логин"
+                    required 
+                />
+                
+                <label>Пароль:</label>
+                <input 
+                    type="password" 
+                    value={password} 
+                    onChange={e => setPassword(e.target.value)} 
+                    placeholder="Введите пароль"
+                    required 
+                />
+                
+                <button type="submit">Войти</button>
+                
+                <div className="auth-footer">
+                    Нет аккаунта? <Link to="/register">Зарегистрироваться</Link>
+                </div>
+            </form>
+        </div>
     );
-}
+};
 
 export default Login;

@@ -6,17 +6,21 @@ function ListStudents() {
     const [students, setStudents] = useState([]);
 
     useEffect(() => {
-        http.get("/listStudents").then(res => setStudents(res.data));
+        http.get("/listStudents")
+            .then(res => {
+                setStudents(res.data);
+            })
+            .catch(err => console.log(err));
     }, []);
 
     return (
-        <div>
-            <h2>Список студентов</h2>
-            <Link to="/addStudent">Добавить студента</Link>
+        <div className="container">
+            <h1>Список студентов</h1>
+            <Link to="/addStudent" className="btn">Добавить нового студента</Link>
             <table>
                 <thead>
                     <tr>
-                        <th>ФИО</th>
+                        <th>ФИО студента</th>
                         <th>Группа</th>
                         <th>Действие</th>
                     </tr>
@@ -25,8 +29,10 @@ function ListStudents() {
                     {students.map(s => (
                         <tr key={s.id}>
                             <td>{s.name}</td>
-                            <td>{s.student_group?.name}</td>
-                            <td><Link to={`/student/${s.id}`}>Редактировать</Link></td>
+                            <td>{s.student_group?.name || 'Без группы'}</td>
+                            <td>
+                                <Link to={`/student/${s.id}`}>Редактировать</Link>
+                            </td>
                         </tr>
                     ))}
                 </tbody>

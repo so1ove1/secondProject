@@ -3,44 +3,38 @@ import http from "../../../http-common";
 import { Navigate } from 'react-router-dom';
 
 function AddDiscipline() {
-  const [name, setName] = useState("");
-  const [submitted, setSubmitted] = useState(false);
+    const [name, setName] = useState("");
+    const [submitted, setSubmitted] = useState(false);
 
-  const handleChange = (event) => {
-    setName(event.target.value);
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = {
-      name: name
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        http.post("/addDiscipline", { name: name })
+            .then(() => {
+                setSubmitted(true);
+            })
+            .catch((e) => {
+                console.log(e);
+            });
     };
-    http
-      .post("/addDiscipline", data)
-      .then(() => {
-        setSubmitted(true);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
 
-  return (
-    !submitted ? (
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="name"
-          value={name}
-          placeholder="Наименование дисциплины"
-          onChange={handleChange}
-        />
-        <input type="submit" value="Добавить" />
-      </form>
-    ) : (
-      <Navigate to="/listDisciplines" />
-    )
-  );
+    if (submitted) return <Navigate to="/listDisciplines" />;
+
+    return (
+        <div className="container">
+            <h2>Новая дисциплина</h2>
+            <form onSubmit={handleSubmit}>
+                <label>Наименование предмета:</label>
+                <input
+                    type="text"
+                    value={name}
+                    placeholder="Например: Высшая математика"
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                />
+                <button type="submit">Добавить в справочник</button>
+            </form>
+        </div>
+    );
 }
 
 export default AddDiscipline;

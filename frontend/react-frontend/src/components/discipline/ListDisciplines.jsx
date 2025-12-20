@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Discipline from './Discipline';
 import http from "../../../http-common";
 
 function ListDisciplines() {
     const [disciplines, setDisciplines] = useState([]);
 
     useEffect(() => {
-        http
-            .get("/listDisciplines")
+        http.get("/listDisciplines")
             .then(response => {
                 setDisciplines(response.data);
             })
@@ -18,17 +16,33 @@ function ListDisciplines() {
     }, []);
 
     return (
-        <div>
-            <Link to="/addDiscipline">Добавить дисциплину</Link>
-            {disciplines.length ? (
-                disciplines.map((discipline) => (
-                    <Link to={`/discipline/${discipline.id}`} key={discipline.id}>
-                        <Discipline id={discipline.id} content={discipline.name} />
-                    </Link>
-                ))
-            ) : (
-                "Подождите, идёт загрузка данных"
-            )}
+        <div className="container">
+            <h1>Учебные дисциплины</h1>
+            <Link to="/addDiscipline" className="btn">Добавить дисциплину</Link>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Наименование дисциплины</th>
+                        <th>Действие</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {disciplines.length > 0 ? (
+                        disciplines.map((d) => (
+                            <tr key={d.id}>
+                                <td>{d.name}</td>
+                                <td>
+                                    <Link to={`/discipline/${d.id}`}>Редактировать</Link>
+                                </td>
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan="3" style={{textAlign: 'center'}}>Дисциплины не найдены</td>
+                        </tr>
+                    )}
+                </tbody>
+            </table>
         </div>
     );
 }

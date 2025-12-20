@@ -9,13 +9,13 @@ const Header = () => {
 
     return (
         <nav>
-            <Link to="/sessions">Сессии</Link>
-            <Link to="/attestations">Оценки</Link>
-            <Link to="/listStudents">Студенты</Link>
-            <Link to="/listStudentGroups">Группы</Link>
-            <Link to="/listTeachers">Преподаватели</Link>
-            <Link to="/listDisciplines">Дисциплины</Link>
-            <Link to="/listReportTypes">Типы отчетов</Link>
+            <Link to="/sessions">Учебные сессии</Link>
+            <Link to="/attestations">Ведомость</Link>
+            <Link to="/listStudents">Список студентов</Link>
+            <Link to="/listStudentGroups">Студенческие группы</Link>
+            <Link to="/listTeachers">Преподавательский состав</Link>
+            <Link to="/listDisciplines">Учебные дисциплины</Link>
+            <Link to="/listReportTypes">Типы контроля</Link>
             <button onClick={logout} style={{background: 'red', color: 'white', border: 'none', cursor: 'pointer'}}>Выйти</button>
         </nav>
     );
