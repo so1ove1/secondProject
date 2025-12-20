@@ -31,3 +31,6 @@ discipline(app);
 
 var teacher = require('./app/route/teacher');
 teacher(app);
+
+var auth = require('./app/route/authRoute');
+auth(app);
