@@ -11,19 +11,13 @@ function TeacherData() {
     const [submitted, setSubmitted] = useState(false);
 
     useEffect(() => {
-        // Загрузка данных преподавателя
         http.get(`/teacher/${id}`).then(res => setTeacher({ name: res.data.name }));
-        
-        // Загрузка всех дисциплин для выпадающего списка
         http.get("/listDisciplines").then(res => setAllDisciplines(res.data));
-
-        // Загрузка текущих связок (какие предметы ведет)
         loadLinks();
     }, [id]);
 
     const loadLinks = () => {
         http.get("/listTeacherDiscipline").then(res => {
-            // Фильтруем только для текущего учителя
             const filtered = res.data.filter(link => link.teacher_id === parseInt(id));
             setTeacherLinks(filtered);
         });
