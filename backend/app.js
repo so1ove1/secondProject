@@ -15,6 +15,10 @@ var db = require('./app/config/db.config.js'); // подключение нас�
 
 db.sequelize.sync({force: false}); // force обозначает автоматическое создание таблиц в базе данных при запуске проекта
 
+var passport = require('passport');
+app.use(passport.initialize());
+require('./app/config/passport')(passport);
+
 app.listen(3000);
 
 var user = require('./app/route/user');

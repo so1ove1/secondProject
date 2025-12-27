@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
-import http from "../../../http-common";
+import http from "../../../config/axios";
 
 function SessionData() {
     const { id } = useParams();

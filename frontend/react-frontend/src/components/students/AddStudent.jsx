@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import http from "../../../http-common";
+import http from "../../../config/axios";
 import { Navigate } from 'react-router-dom';
 
 function AddStudent() {
